@@ -4,13 +4,13 @@ import com.unipi.eshop.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Arrays;
 import java.util.Collection;
 
 public class CustomUserDetails implements UserDetails
 {
+    private int uid;
     private String username;
     private String password;
 
@@ -18,6 +18,7 @@ public class CustomUserDetails implements UserDetails
     {
         this.username = user.getUserName();
         this.password = user.getPassword();
+        this.uid = user.getUid();
     }
 
     @Override
@@ -53,5 +54,9 @@ public class CustomUserDetails implements UserDetails
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public int getUid() {
+        return uid;
     }
 }

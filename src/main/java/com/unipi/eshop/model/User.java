@@ -4,13 +4,20 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity(name = "user_info")
-public class User
-{
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int uid;
     private String userName;
     private String password;
+
+    public User(String userName, String password) {
+        this.userName = userName;
+        this.password = password;
+    }
+
+    public User() {
+    }
 
     @OneToMany
     private List<Product> products;
