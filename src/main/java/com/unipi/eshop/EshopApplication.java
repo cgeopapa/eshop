@@ -5,15 +5,14 @@ import com.unipi.eshop.config.Endpoints;
 import com.unipi.eshop.dao.ProductRepository;
 import com.unipi.eshop.dao.UserRepository;
 import com.unipi.eshop.model.AuthenticationRequest;
-import com.unipi.eshop.model.AuthenticationResponse;
 import com.unipi.eshop.model.Product;
 import com.unipi.eshop.model.User;
+import com.unipi.eshop.model.UserResponse;
 import com.unipi.eshop.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,6 +20,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+import java.security.Principal;
+
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600, allowCredentials = "true")
 @SpringBootApplication
 @RestController
 public class EshopApplication {
@@ -47,8 +51,8 @@ public class EshopApplication {
         return productRepository.findAll().toArray();
     }
 
-    @PostMapping(value = "/login")
-    public ResponseEntity<?> login(@RequestBody AuthenticationRequest request) throws Exception {
+    @PostMapping(value = Endpoints.login)
+    public ResponseEntity<?> login(@RequestBody AuthenticationRequest request, HttpServletResponse response) throws Exception {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.getUname(), request.getPassword())
@@ -59,25 +63,23 @@ public class EshopApplication {
 
         final User user = userRepository.findByUserName(request.getUname()).get();
         final String jwt = jwtUtil.generateToken(user);
-        return ResponseEntity.ok(new AuthenticationResponse(jwt));
 
-//        Optional<User> dbUser = userRepository.findByUserName(user.getUserName());
-//        if(dbUser.isPresent())
-//        {
-//
-//            return passwordEncoder.matches(user.getPassword(), dbUser.get().getPassword());
-//        }
-//
-//        return false;
+        Cookie cookie = new Cookie("jwt-auth-token", jwt);
+        cookie.setHttpOnly(false);
+        cookie.setSecure(false);
+        response.addCookie(cookie);
+
+        return ResponseEntity.ok(user);
     }
 
-    @GetMapping("/user")
-    @PreAuthorize("hasRole('USER')")
-    public String userAccess() {
-        return "User Content.";
+    @GetMapping(value = Endpoints.user)
+    public UserResponse getUser(Principal principal) {
+        String uname = principal.getName();
+        User user = userRepository.findByUserName(uname).get();
+        return new UserResponse(user.getUserName(), user.getProducts());
     }
 
-    @PostMapping(value = "/register")
+    @PostMapping(value = Endpoints.register)
     public void setUser(@RequestParam String uname) {
         User user = new User();
         user.setUserName(uname);
