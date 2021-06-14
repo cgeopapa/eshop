@@ -1,0 +1,16 @@
+nav {
+  background-color: #222;
+  color: #ddd;
+  width: 100%;
+  margin: 0;
+  padding: .4rem 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-family: Ubuntu, serif;
+
+  h1, h2 {
+    margin: 0 1rem;
+    padding: 0;
+  }
+}

@@ -10,6 +10,7 @@ export class AuthGuardService implements CanActivate {
   constructor(private router: Router) {
   }
 
+  //TODO: test for expired token
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     let ca: Array<string> = document.cookie.split(';');
     const prefix: string = "jwt-auth-token=";

@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {AuthenticationRequest} from "./utils/AuthenticationRequest";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
+import Product from "./utils/Product";
 
 @Injectable({
   providedIn: 'root'
@@ -23,9 +24,19 @@ export class RestService {
     return resp.ok;
   }
 
-  public async productsRequest() {
-    // this.authHeader = this.generateAuthHeader();
+  public productsRequest() {
     return this.http.get('http://localhost:8080/products', {
+      headers: this.generateAuthHeader(),
+      observe: 'response',
+    }).toPromise()
+      .then(res => <Product[]>res.body)
+      .then(products => {
+        return products;
+      });
+  }
+
+  public async getUser() {
+    return this.http.get('http://localhost:8080/user', {
       headers: this.generateAuthHeader(),
       observe: 'response',
     }).toPromise();

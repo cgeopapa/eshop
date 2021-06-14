@@ -8,18 +8,22 @@ import {FormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import {ProductsComponent} from './products/products.component';
 import {AuthGuardService} from "./auth-guard.service";
+import {NavbarComponent} from './navbar/navbar.component';
+import {DataViewModule} from "primeng/dataview";
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    ProductsComponent
+    ProductsComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    DataViewModule
   ],
   providers: [AuthGuardService],
   bootstrap: [AppComponent]
