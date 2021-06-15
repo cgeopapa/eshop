@@ -10,20 +10,36 @@ import {ProductsComponent} from './products/products.component';
 import {AuthGuardService} from "./auth-guard.service";
 import {NavbarComponent} from './navbar/navbar.component';
 import {DataViewModule} from "primeng/dataview";
+import {CardModule} from "primeng/card";
+import {ButtonModule} from "primeng/button";
+import {GridViewItemComponent} from './grid-view-item/grid-view-item.component';
+import {CartComponent} from './cart/cart.component';
+import {SidebarModule} from "primeng/sidebar";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {OrderListModule} from "primeng/orderlist";
+import {SharedModule} from "primeng/api";
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     ProductsComponent,
-    NavbarComponent
+    NavbarComponent,
+    GridViewItemComponent,
+    CartComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    DataViewModule
+    DataViewModule,
+    CardModule,
+    ButtonModule,
+    SidebarModule,
+    BrowserAnimationsModule,
+    OrderListModule,
+    SharedModule
   ],
   providers: [AuthGuardService],
   bootstrap: [AppComponent]

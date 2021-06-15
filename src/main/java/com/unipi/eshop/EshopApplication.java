@@ -1,6 +1,5 @@
 package com.unipi.eshop;
 
-import com.unipi.eshop.config.CustomUserDetails;
 import com.unipi.eshop.config.Endpoints;
 import com.unipi.eshop.dao.ProductRepository;
 import com.unipi.eshop.dao.UserRepository;
@@ -16,13 +15,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
+import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600, allowCredentials = "true")
 @SpringBootApplication
@@ -74,8 +73,7 @@ public class EshopApplication {
 
     @GetMapping(value = Endpoints.user)
     public UserResponse getUser(Principal principal) {
-        String uname = principal.getName();
-        User user = userRepository.findByUserName(uname).get();
+        User user = getUserFromPrincipal(principal);
         return new UserResponse(user.getUserName(), user.getProducts());
     }
 
@@ -89,16 +87,21 @@ public class EshopApplication {
     }
 
     @PostMapping(value = Endpoints.addProductToCart)
-    public int addToCart(@RequestParam int pid) {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        int uid = ((CustomUserDetails) principal).getUid();
-
-        User user = userRepository.getById(uid);
+    public List<Product> addToCart(@RequestParam int pid, Principal principal) {
+        User user = getUserFromPrincipal(principal);
         Product product = productRepository.getById(pid);
 
         user.getProducts().add(product);
-        userRepository.save(user);
+        try {
+            userRepository.save(user);
+        } catch (Exception ignored) {
+        }
 
-        return uid;
+        return user.getProducts();
+    }
+
+    private User getUserFromPrincipal(Principal principal) {
+        String uname = principal.getName();
+        return userRepository.findByUserName(uname).get();
     }
 }

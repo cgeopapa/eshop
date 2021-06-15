@@ -1,14 +1,13 @@
 import {Injectable} from '@angular/core';
 import {AuthenticationRequest} from "./utils/AuthenticationRequest";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import Product from "./utils/Product";
+import User from "./utils/User";
 
 @Injectable({
   providedIn: 'root'
 })
 export class RestService {
-
-  private authHeader: HttpHeaders;
 
   constructor(private http: HttpClient) {
   }
@@ -39,6 +38,19 @@ export class RestService {
     return this.http.get('http://localhost:8080/user', {
       headers: this.generateAuthHeader(),
       observe: 'response',
+    }).toPromise()
+      .then(user => <User>user.body)
+      .then(user => {
+        return user;
+      });
+  }
+
+  public addProductToCart(pid: number) {
+    const params = new HttpParams().set("pid", String(pid));
+    return this.http.post("http://localhost:8080/addToCart", {}, {
+      headers: this.generateAuthHeader(),
+      withCredentials: true,
+      params: params
     }).toPromise();
   }
 

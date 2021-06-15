@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {RestService} from "../rest.service";
+import {UserService} from "../user.service";
+import User from "../utils/User";
 
 @Component({
   selector: 'app-navbar',
@@ -8,15 +10,14 @@ import {RestService} from "../rest.service";
 })
 export class NavbarComponent implements OnInit {
 
-  public user: any = {uname: "fetching your details..."};
+  public user: User = {uname: "fetching your details...", products: []};
 
-  constructor(private rest: RestService) {
+  constructor(private rest: RestService, private userService: UserService) {
   }
 
-  ngOnInit(): void {
-    this.rest.getUser().then(user => {
-      this.user = user.body;
+  async ngOnInit() {
+    await this.userService.getUser().then(user => {
+      this.user = user
     });
   }
-
 }
