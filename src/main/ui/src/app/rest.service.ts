@@ -50,8 +50,10 @@ export class RestService {
     return this.http.post("http://localhost:8080/addToCart", {}, {
       headers: this.generateAuthHeader(),
       withCredentials: true,
-      params: params
-    }).toPromise();
+      params: params,
+      observe: 'response'
+    }).toPromise()
+      .then(res => <Product[]>res.body);
   }
 
   public generateAuthHeader(): HttpHeaders {

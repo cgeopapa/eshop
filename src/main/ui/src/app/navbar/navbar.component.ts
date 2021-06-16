@@ -16,8 +16,6 @@ export class NavbarComponent implements OnInit {
   }
 
   async ngOnInit() {
-    await this.userService.getUser().then(user => {
-      this.user = user
-    });
+    this.user = await this.userService.getUser();
   }
 }
