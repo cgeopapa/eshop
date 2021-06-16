@@ -1,12 +1,19 @@
 <p-button (click)="display = !display" class="p-button-warning"
-          icon="pi pi-shopping-cart" label="Cart"></p-button>
+          [badge]="cartProducts.length.toString()" icon="pi pi-shopping-cart" label="Cart"></p-button>
 <p-sidebar [(visible)]="display" position="right">
-  My Cart
-  <p-orderList [value]="cartProducts" controlsPosition="right" dragdrop="true">
-    <ng-template let-product pTemplate="item">
-      <p-card>
-        {{product.name}}
-      </p-card>
-    </ng-template>
-  </p-orderList>
+  <div class="p-d-flex p-jc-between p-flex-column">
+    <h1>My Cart</h1>
+    <p-orderList [listStyle]="{'height': '75vh'}" [value]="cartProducts" controlsPosition="right" dragdrop="true">
+      <ng-template let-product pTemplate="item">
+        <p-card>
+          <div class="p-d-flex p-flex-row p-jc-between p-ai-center">
+            {{product.name}}
+            <p-button (onClick)="removeProduct()" class="p-button-danger p-button-rounded"
+                      icon="pi pi-trash"></p-button>
+          </div>
+        </p-card>
+      </ng-template>
+    </p-orderList>
+    <p-button class="p-my-2" label="Go to Payment"></p-button>
+  </div>
 </p-sidebar>

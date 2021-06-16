@@ -100,6 +100,18 @@ public class EshopApplication {
         return ResponseEntity.ok().body(products);
     }
 
+    @DeleteMapping(value = Endpoints.addProductToCart, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Product>> removeFromCart(@RequestParam int pid, Principal principal) {
+        User user = getUserFromPrincipal(principal);
+        Product product = productRepository.getById(pid);
+
+        user.getProducts().remove(product);
+        userRepository.save(user);
+        List<Product> products = user.getProducts();
+
+        return ResponseEntity.ok().body(products);
+    }
+
     private User getUserFromPrincipal(Principal principal) {
         String uname = principal.getName();
         return userRepository.findByUserName(uname).get();

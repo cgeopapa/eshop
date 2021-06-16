@@ -19,4 +19,8 @@ export class CartComponent implements OnInit {
       this.cartProducts = products;
     })
   }
+
+  removeProduct() {
+
+  }
 }
