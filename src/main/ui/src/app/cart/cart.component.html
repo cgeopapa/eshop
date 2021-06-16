@@ -1,0 +1,12 @@
+<p-button (click)="display = !display" class="p-button-warning"
+          icon="pi pi-shopping-cart" label="Cart"></p-button>
+<p-sidebar [(visible)]="display" position="right">
+  My Cart
+  <p-orderList [value]="cartProducts" controlsPosition="right" dragdrop="true">
+    <ng-template let-product pTemplate="item">
+      <p-card>
+        {{product.name}}
+      </p-card>
+    </ng-template>
+  </p-orderList>
+</p-sidebar>

@@ -1,0 +1,6 @@
+<p-card header={{product.name}}>
+  <p-button (onClick)="addProduct($event)" [disabled]="isInCart"
+            [label]="isInCart? 'Already in cart' : 'Add to cart'"
+            [loading]="isAdding" class="p-button-success p-button-raised p-button-rounded"
+            icon="pi pi-shopping-cart"></p-button>
+</p-card>

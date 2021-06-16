@@ -1,0 +1,13 @@
+<app-navbar></app-navbar>
+<p-dataView [paginator]="true" [rows]="12" [value]="products" class="p-px-2"
+            layout="grid">
+  <ng-template pTemplate="header">
+    <div class="p-d-flex p-jc-between p-ai-center">
+      Our Products
+      <app-cart></app-cart>
+    </div>
+  </ng-template>
+  <ng-template let-product pTemplate="gridItem">
+    <app-grid-view-item [product]="product" class="p-col-4 p-p-1"></app-grid-view-item>
+  </ng-template>
+</p-dataView>
