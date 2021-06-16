@@ -18,6 +18,8 @@ import {SidebarModule} from "primeng/sidebar";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {OrderListModule} from "primeng/orderlist";
 import {SharedModule} from "primeng/api";
+import {PaymentComponent} from './payment/payment.component';
+import {InputTextModule} from "primeng/inputtext";
 
 @NgModule({
   declarations: [
@@ -26,7 +28,8 @@ import {SharedModule} from "primeng/api";
     ProductsComponent,
     NavbarComponent,
     GridViewItemComponent,
-    CartComponent
+    CartComponent,
+    PaymentComponent
   ],
   imports: [
     BrowserModule,
@@ -39,7 +42,8 @@ import {SharedModule} from "primeng/api";
     SidebarModule,
     BrowserAnimationsModule,
     OrderListModule,
-    SharedModule
+    SharedModule,
+    InputTextModule
   ],
   providers: [AuthGuardService],
   bootstrap: [AppComponent]

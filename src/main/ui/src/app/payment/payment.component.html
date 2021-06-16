@@ -1,0 +1,25 @@
+<app-navbar></app-navbar>
+<div class="p-d-flex p-flex-row p-jc-center p-my-2">
+  <p-card class="p-d-inline-flex" header="Payment">
+    <div class="p-d-flex p-flex-row">
+      <p-orderList [listStyle]="{'height': '75vh'}" [value]="cartProducts" controlsPosition="right" dragdrop="true">
+        <ng-template let-product pTemplate="item">
+          <p-card>
+            <div class="p-d-flex p-flex-row p-jc-between p-ai-center">
+              {{product.name}}
+              <p-button (onClick)="removeProduct()" class="p-button-danger p-button-rounded"
+                        icon="pi pi-trash"></p-button>
+            </div>
+          </p-card>
+        </ng-template>
+      </p-orderList>
+      <div>
+        <span class="p-float-label">
+          <input id="address" pInputText type="text">
+          <label for="address">Address</label>
+        </span>
+        <p-button class="p-my-4" label="Complete Order"></p-button>
+      </div>
+    </div>
+  </p-card>
+</div>
