@@ -11,8 +11,7 @@ public class Product
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int pid;
-
-    private final String name;
+    private String name;
 
     public Product(int pid, String name)
     {
@@ -21,7 +20,7 @@ public class Product
     }
 
     public Product() {
-        this.name = "";
+
     }
 
     public int getPid()

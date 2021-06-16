@@ -19,7 +19,7 @@ public class User {
     public User() {
     }
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     private List<Product> products;
 
     public void setProducts(List<Product> products) {

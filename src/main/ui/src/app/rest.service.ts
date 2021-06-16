@@ -54,7 +54,7 @@ export class RestService {
     }).toPromise();
   }
 
-  private generateAuthHeader(): HttpHeaders {
+  public generateAuthHeader(): HttpHeaders {
     let ca: Array<string> = document.cookie.split(';');
     const prefix: string = "jwt-auth-token=";
     for (let cookie of ca) {

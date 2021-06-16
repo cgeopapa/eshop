@@ -11,6 +11,7 @@ import com.unipi.eshop.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -68,7 +69,8 @@ public class EshopApplication {
         cookie.setSecure(false);
         response.addCookie(cookie);
 
-        return ResponseEntity.ok(user);
+        UserResponse userResponse = new UserResponse(user.getUserName(), user.getProducts());
+        return ResponseEntity.ok(userResponse);
     }
 
     @GetMapping(value = Endpoints.user)
@@ -86,18 +88,16 @@ public class EshopApplication {
         userRepository.save(user);
     }
 
-    @PostMapping(value = Endpoints.addProductToCart)
-    public List<Product> addToCart(@RequestParam int pid, Principal principal) {
+    @PostMapping(value = Endpoints.addProductToCart, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Product>> addToCart(@RequestParam int pid, Principal principal) {
         User user = getUserFromPrincipal(principal);
         Product product = productRepository.getById(pid);
 
         user.getProducts().add(product);
-        try {
-            userRepository.save(user);
-        } catch (Exception ignored) {
-        }
+        userRepository.save(user);
+        List<Product> products = user.getProducts();
 
-        return user.getProducts();
+        return ResponseEntity.ok().body(products);
     }
 
     private User getUserFromPrincipal(Principal principal) {
