@@ -1,9 +1,13 @@
 <app-navbar></app-navbar>
-<p-dataView [paginator]="true" [rows]="12" [value]="products" class="p-px-2"
-            layout="grid">
+<p-dataView #dv [paginator]="true" [rows]="12" [value]="products" class="p-px-2"
+            filterBy="name" layout="grid">
   <ng-template pTemplate="header">
     <div class="p-d-flex p-jc-between p-ai-center">
       Our Products
+      <span class="p-input-icon-left p-mb-2 p-mb-md-0">
+        <i class="pi pi-search"></i>
+        <input (input)="dv.filter($event.target.value)" pInputText placeholder="Search by Name" type="search">
+      </span>
       <app-cart></app-cart>
     </div>
   </ng-template>
