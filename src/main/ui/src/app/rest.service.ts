@@ -56,6 +56,17 @@ export class RestService {
       .then(res => <Product[]>res.body);
   }
 
+  public removeProductFromCart(pid: number) {
+    const params = new HttpParams().set("pid", String(pid));
+    return this.http.delete("http://localhost:8080/addToCart", {
+      headers: this.generateAuthHeader(),
+      withCredentials: true,
+      params: params,
+      observe: 'response'
+    }).toPromise()
+      .then(res => <Product[]>res.body);
+  }
+
   public generateAuthHeader(): HttpHeaders {
     let ca: Array<string> = document.cookie.split(';');
     const prefix: string = "jwt-auth-token=";

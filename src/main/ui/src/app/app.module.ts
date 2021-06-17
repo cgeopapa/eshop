@@ -20,6 +20,7 @@ import {OrderListModule} from "primeng/orderlist";
 import {SharedModule} from "primeng/api";
 import {PaymentComponent} from './payment/payment.component';
 import {InputTextModule} from "primeng/inputtext";
+import {CartItemComponent} from './cart-item/cart-item.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import {InputTextModule} from "primeng/inputtext";
     NavbarComponent,
     GridViewItemComponent,
     CartComponent,
-    PaymentComponent
+    PaymentComponent,
+    CartItemComponent
   ],
   imports: [
     BrowserModule,

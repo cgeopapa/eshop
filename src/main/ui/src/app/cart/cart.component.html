@@ -5,13 +5,7 @@
     <h1>My Cart</h1>
     <p-orderList [listStyle]="{'height': '75vh'}" [value]="cartProducts" controlsPosition="right" dragdrop="true">
       <ng-template let-product pTemplate="item">
-        <p-card>
-          <div class="p-d-flex p-flex-row p-jc-between p-ai-center">
-            {{product.name}}
-            <p-button (onClick)="removeProduct()" class="p-button-danger p-button-rounded"
-                      icon="pi pi-trash"></p-button>
-          </div>
-        </p-card>
+        <app-cart-item [product]="product"></app-cart-item>
       </ng-template>
     </p-orderList>
     <a class="p-my-2" routerLink="/payment">
