@@ -8,4 +8,5 @@ public class Endpoints {
     public static final String register = "/register";
     public static final String addProductToCart = "/addToCart";
     public static final String login = "/login";
+    public static final String sendMail = "/complete";
 }

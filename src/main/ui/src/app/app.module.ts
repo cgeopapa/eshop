@@ -5,7 +5,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {LoginComponent} from "./login/login.component";
 import {FormsModule} from "@angular/forms";
-import {HttpClientModule} from "@angular/common/http";
+import {HttpClientModule, HttpClientXsrfModule} from "@angular/common/http";
 import {ProductsComponent} from './products/products.component';
 import {AuthGuardService} from "./auth-guard.service";
 import {NavbarComponent} from './navbar/navbar.component';
@@ -38,6 +38,7 @@ import {CartItemComponent} from './cart-item/cart-item.component';
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
+    HttpClientXsrfModule.withOptions({cookieName: 'XSRF-TOKEN'}),
     DataViewModule,
     CardModule,
     ButtonModule,
