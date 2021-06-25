@@ -31,7 +31,7 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Properties;
 
-@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600, allowCredentials = "true")
+@CrossOrigin(origins = "https://localhost:4200", maxAge = 3600, allowCredentials = "true")
 @SpringBootApplication
 @RestController
 public class EshopApplication {

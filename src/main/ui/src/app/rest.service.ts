@@ -9,11 +9,13 @@ import User from "./utils/User";
 })
 export class RestService {
 
+  private readonly url: string = "https://localhost:8080";
+
   constructor(private http: HttpClient) {
   }
 
   public async loginRequest(credentials: AuthenticationRequest): Promise<boolean> {
-    const resp = await this.http.post('http://localhost:8080/login', {
+    const resp = await this.http.post(this.url + '/login', {
       uname: credentials.uname,
       password: credentials.password
     }, {
@@ -24,7 +26,7 @@ export class RestService {
   }
 
   public productsRequest() {
-    return this.http.get('http://localhost:8080/products', {
+    return this.http.get(this.url + '/products', {
       headers: this.generateAuthHeader(),
       observe: 'response',
     }).toPromise()
@@ -47,7 +49,7 @@ export class RestService {
 
   public addProductToCart(pid: number) {
     const params = new HttpParams().set("pid", String(pid));
-    return this.http.post("http://localhost:8080/addToCart", {}, {
+    return this.http.post(this.url + "/addToCart", {}, {
       headers: this.generateAuthHeader(),
       withCredentials: true,
       params: params,
@@ -58,7 +60,7 @@ export class RestService {
 
   public removeProductFromCart(pid: number) {
     const params = new HttpParams().set("pid", String(pid));
-    return this.http.delete("http://localhost:8080/addToCart", {
+    return this.http.delete(this.url + "/addToCart", {
       headers: this.generateAuthHeader(),
       withCredentials: true,
       params: params,
