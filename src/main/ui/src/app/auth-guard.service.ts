@@ -15,7 +15,7 @@ export class AuthGuardService implements CanActivate {
     let ca: Array<string> = document.cookie.split(';');
     const prefix: string = "jwt-auth-token=";
     for (let cookie of ca) {
-      if (cookie.startsWith(prefix)) {
+      if (cookie.trim().startsWith(prefix)) {
         try {
           await this.rest.getUser();
         } catch (e) {

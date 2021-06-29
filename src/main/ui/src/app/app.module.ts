@@ -38,7 +38,7 @@ import {CartItemComponent} from './cart-item/cart-item.component';
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    HttpClientXsrfModule.withOptions({cookieName: 'XSRF-TOKEN'}),
+    HttpClientXsrfModule.withOptions({cookieName: "XSRF-TOKEN", headerName: "X-XSRF-TOKEN"}),
     DataViewModule,
     CardModule,
     ButtonModule,

@@ -31,7 +31,7 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Properties;
 
-@CrossOrigin(origins = "https://localhost:4200", maxAge = 3600, allowCredentials = "true")
+//@CrossOrigin(maxAge = 3600, allowCredentials = "true")
 @SpringBootApplication
 @RestController
 public class EshopApplication {
@@ -97,6 +97,7 @@ public class EshopApplication {
 
     @PostMapping(value = Endpoints.addProductToCart, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Product>> addToCart(@RequestParam int pid, Principal principal) {
+        System.out.println("Adding");
         User user = getUserFromPrincipal(principal);
         Product product = productRepository.getById(pid);
 

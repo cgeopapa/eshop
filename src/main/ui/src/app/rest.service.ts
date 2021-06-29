@@ -9,7 +9,7 @@ import User from "./utils/User";
 })
 export class RestService {
 
-  private readonly url: string = "https://localhost:8080";
+  private readonly url: string = "//192.168.1.20:8080";
 
   constructor(private http: HttpClient) {
   }
@@ -29,6 +29,7 @@ export class RestService {
     return this.http.get(this.url + '/products', {
       headers: this.generateAuthHeader(),
       observe: 'response',
+      withCredentials: true
     }).toPromise()
       .then(res => <Product[]>res.body)
       .then(products => {
@@ -37,9 +38,10 @@ export class RestService {
   }
 
   public async getUser() {
-    return this.http.get('http://localhost:8080/user', {
+    return this.http.get(this.url + '/user', {
       headers: this.generateAuthHeader(),
       observe: 'response',
+      withCredentials: true
     }).toPromise()
       .then(user => <User>user.body)
       .then(user => {
@@ -49,11 +51,11 @@ export class RestService {
 
   public addProductToCart(pid: number) {
     const params = new HttpParams().set("pid", String(pid));
-    return this.http.post(this.url + "/addToCart", {}, {
+    return this.http.post(this.url + "/addToCart", null, {
       headers: this.generateAuthHeader(),
-      withCredentials: true,
       params: params,
-      observe: 'response'
+      observe: 'response',
+      withCredentials: true
     }).toPromise()
       .then(res => <Product[]>res.body);
   }
@@ -62,9 +64,9 @@ export class RestService {
     const params = new HttpParams().set("pid", String(pid));
     return this.http.delete(this.url + "/addToCart", {
       headers: this.generateAuthHeader(),
-      withCredentials: true,
       params: params,
-      observe: 'response'
+      observe: 'response',
+      withCredentials: true
     }).toPromise()
       .then(res => <Product[]>res.body);
   }
@@ -73,9 +75,22 @@ export class RestService {
     let ca: Array<string> = document.cookie.split(';');
     const prefix: string = "jwt-auth-token=";
     for (let cookie of ca) {
-      if (cookie.startsWith(prefix)) {
-        const jwt = cookie.substr(prefix.length);
+      if (cookie.trim().startsWith(prefix)) {
+        const jwt = cookie.trim().substr(prefix.length);
         return new HttpHeaders().append("Authorization", `Bearer ${jwt}`);
+      }
+    }
+    return null;
+  }
+
+  private generateCSRFHeader(): HttpHeaders {
+    let ca: Array<string> = document.cookie.split(';');
+    const prefix: string = "XSRF-TOKEN=";
+    for (let cookie of ca) {
+      if (cookie.trim().startsWith(prefix)) {
+        const csrf = cookie.trim().substr(prefix.length);
+        let header = this.generateAuthHeader();
+        return header.append("X-XSRF-TOKEN", csrf);
       }
     }
     return null;

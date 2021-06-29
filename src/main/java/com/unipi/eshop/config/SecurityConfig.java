@@ -14,9 +14,13 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfFilter;
-import org.springframework.security.web.csrf.CsrfTokenRepository;
-import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+
+import java.util.Collections;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -42,21 +46,34 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and()
-                .csrf().ignoringAntMatchers(new String[]{Endpoints.login, Endpoints.register}).csrfTokenRepository(csrfTokenRepository()).and()
+                .csrf().ignoringAntMatchers(new String[]{Endpoints.login, Endpoints.register}).csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
                 .authorizeRequests()
                 .antMatchers("/register**").permitAll()
                 .antMatchers("/login").permitAll()
                 .anyRequest().authenticated()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().httpBasic();
-        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+                .and().formLogin().disable();
+
         http.addFilterAfter(csrfRequestFilter, CsrfFilter.class);
+        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
-    private CsrfTokenRepository csrfTokenRepository() {
-        HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
-        repository.setHeaderName(CsrfRequestFilter.CSRF_COOKIE_NAME);
-        return repository;
+//    private CsrfTokenRepository csrfTokenRepository() {
+//        HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
+//        repository.setHeaderName(CsrfRequestFilter.CSRF_COOKIE_NAME);
+//        return repository;
+//    }
+
+    @Bean
+    public CorsFilter corsFilter() {
+        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.setAllowedOriginPatterns(Collections.singletonList("*"));
+        config.setAllowedHeaders(Collections.singletonList("*"));
+        config.setAllowedMethods(Collections.singletonList("*"));
+        source.registerCorsConfiguration("/**", config);
+        return new CorsFilter(source);
     }
 
     @Bean
